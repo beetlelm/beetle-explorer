@@ -1,0 +1,11 @@
+# Minimal dependencies to load and run Beetle models for inference.
+# (You do NOT need the full beetlelm training framework — the published
+#  checkpoints ship their own model code and load via trust_remote_code.)
+#
+# On Google Colab, torch is already installed, so the notebook only pip-installs
+# the rest. This file is here for people running the notebook locally.
+torch>=2.5.1,<2.7.0
+transformers>=4.45,<5
+huggingface_hub>=0.25
+safetensors>=0.4.0
+ipywidgets>=8

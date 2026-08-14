@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Hugging Face / model caches
+.hf_cache/
+~/.cache/huggingface/
+
+# OS
+.DS_Store
