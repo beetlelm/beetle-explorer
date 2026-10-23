@@ -1,58 +1,70 @@
-# 🪲 Beetle Explorer
+# 🪲 **Beetle Explorer**
 
-**Load any Beetle language model, at any point in its training, and play with it — right in your browser, no coding required.**
+Beetle Explorer lets you load and play with [Beetle](https://beetlelm.github.io) language models right in your browser—no coding required. It's the non-technical companion to the training framework: one Google Colab notebook where you pick a collection, language, curriculum, seed, and checkpoint from dropdown menus, move a few sliders, and generate text. If you want to *use* the models without writing any Python, start here.
 
-This repository contains a single Google Colab notebook that lets anyone explore the [Beetle](https://huggingface.co/Beetle-HumanScale) family of small research language models. You pick the settings you care about, choose how far into training you want the model to be, and generate text with simple sliders.
-
-It's built for people who want to *use* the models in applied settings — you do **not** need to know how to train models, or write any Python.
+> For a **detailed run-through**, check out the **full tutorial** on our website at [beetlelm.github.io/docs.html#beetle-explorer](https://beetlelm.github.io/docs.html#beetle-explorer).
 
 ---
 
-## ▶️ Open the notebook
+## **Key Features**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/beetlelm/beetle-explorer/blob/main/notebooks/Beetle_Model_Explorer.ipynb)
+1. **No-Code, Browser-Based Exploration**  
+   - Everything happens in a single notebook: `notebooks/Beetle_Model_Explorer.ipynb`  
+   - Open it in Colab, run the cells top to bottom, and interact through friendly widgets—no training stack, no setup
 
-Click the badge above (you'll need to be signed in to Google, and authorise Colab's GitHub access the first time).
+2. **Pick a Model from Plain-English Menus**  
+   - Choose a **collection** (scale / training data), the **language(s)** it learned, the **curriculum** (how and when a second language was introduced), the **random seed**, and any extra settings  
+   - The notebook reads the model's name and shows you a friendly summary of exactly what it is
 
-**No badge / prefer to upload it yourself?** Download `notebooks/Beetle_Model_Explorer.ipynb` from this repo, go to [colab.research.google.com](https://colab.research.google.com), choose **File ▸ Upload notebook**, and pick the file.
+3. **Travel Through Training with Checkpoints**  
+   - Meet the model **fully trained** (`main`) or at an earlier **snapshot** (`step-N`) to watch how its behaviour changed as it learned  
+   - Checkpoints are just Hugging Face revisions, so any point in training is one dropdown away
 
-Then just run the cells from top to bottom (each has a ▶️ play button).
+4. **Generate Text with Simple Sliders**  
+   - Prompt the model with your own text and tune creativity, length, and more without touching code  
+   - Optionally **look under the hood**: inspect the exact config, the training recipe, and the model's top next-word predictions
 
-> 💡 For a free speed-up in Colab: **Runtime ▸ Change runtime type ▸ T4 GPU**. The models are small, so it also runs fine on CPU — just a little slower.
+5. **Minimal Dependencies**  
+   - Needs only `torch`, `transformers`, `huggingface_hub`, and `ipywidgets`—no training framework required  
+   - Loading a checkpoint is a single `AutoModelForCausalLM.from_pretrained(repo, revision="step-N", trust_remote_code=True)` call
 
 ---
 
-## What you can do
+## **Quick Start**
 
-- **Choose a model** using plain-English menus:
-  - which **collection** (scale / training data) it comes from,
-  - the **language(s)** it learned,
-  - the **teaching strategy** (how and when a second language was introduced),
-  - the **random seed** and any **extra settings** (anti-forgetting, per-language vocabulary, and so on).
-  The notebook reads the model's name and shows you a friendly summary of exactly what it is.
-- **Choose a checkpoint** — meet the model when it's *fully trained* (`main`) or at an earlier **snapshot** (`step-…`) to see how its behaviour changed as it learned.
-- **Generate text** from your own prompts, with sliders for creativity, length, and more.
-- **Look under the hood** (optional): see the exact configuration, the training recipe, and the model's top next-word predictions.
+1. **Open in Colab**
 
-## Which collection should I use?
+   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/beetlelm/beetle-explorer/blob/main/notebooks/Beetle_Model_Explorer.ipynb)
 
-> ⚠️ **Start with the final 24-billion-token release.** Because of a token-budget
-> drift bug, several earlier collections never reached their advertised size (see
-> the note below). For new work, default to **Beetle-FineWeb-24B-4** or
-> **Beetle-FineWeb-24B-5** — these are the only genuine 24B-token collections.
+   Click the badge above (sign in to Google and authorise Colab's GitHub access the first time), then run the cells from top to bottom—each has a ▶️ play button.
 
-| Collection | What it is |
-|---|---|
-| [Beetle-FineWeb-24B-4](https://huggingface.co/Beetle-FineWeb-24B-4) | **Recommended.** A genuine 24B-token FineWeb-2 collection (final release). |
-| [Beetle-FineWeb-24B-5](https://huggingface.co/Beetle-FineWeb-24B-5) | **Recommended.** A genuine 24B-token FineWeb-2 collection (final release). |
-| [Beetle-HumanScale](https://huggingface.co/Beetle-HumanScale) | Trained on roughly the amount of language a child hears. |
-| [Beetle-FineWeb-100M](https://huggingface.co/Beetle-FineWeb-100M) | Small models trained on 100M tokens of the multilingual FineWeb-2 web corpus. |
+   **Prefer to upload it yourself?** Download `notebooks/Beetle_Model_Explorer.ipynb`, go to [colab.research.google.com](https://colab.research.google.com), choose **File ▸ Upload notebook**, and pick the file.
 
-### A note on the earlier "24B" and "2B" collections
+2. **Pick a Model**
 
-A token-budget drift bug meant several earlier collections stopped well short of
-their nominal token counts. They remain available for reference, but their names
-overstate how much data they actually saw:
+   Use the dropdowns to choose a **collection**, **language**, **curriculum**, **seed**, and **checkpoint**. The notebook summarises your choice in plain English and loads it under the hood with:
+
+   ```python
+   from transformers import AutoModelForCausalLM, AutoTokenizer
+
+   repo = "Beetle-FineWeb-24B-4/beetle-monolingual-fineweb-24b-isl"
+   model = AutoModelForCausalLM.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
+   tok   = AutoTokenizer.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
+   ```
+
+3. **Generate Text**
+
+   Type a prompt, move the sliders, and hit generate. These are small research models and will happily produce nonsense—that's part of what makes watching them learn interesting.
+
+> 💡 **Running locally (optional):** Colab is the easy path, but you can run the notebook on your own machine too. Install the inference dependencies with `pip install -r requirements.txt`, then open `notebooks/Beetle_Model_Explorer.ipynb` in Jupyter.
+
+---
+
+## **Which collection to pick**
+
+> ⚠️ **New here? Default to the final 24-billion-token release.** The only genuine 24B-token collections are **[Beetle-FineWeb-24B-4](https://huggingface.co/Beetle-FineWeb-24B-4)** and **[Beetle-FineWeb-24B-5](https://huggingface.co/Beetle-FineWeb-24B-5)**. Start with one of these.
+
+Because of a **token-budget bug**, several earlier collections never reached the token counts their names advertise. They remain available for reference, but the labels overstate how much data they actually saw:
 
 | Collection | Advertised | Actually reached |
 |---|---|---|
@@ -60,52 +72,21 @@ overstate how much data they actually saw:
 | [Beetle-FineWeb3-24B](https://huggingface.co/Beetle-FineWeb3-24B) | 24B tokens | ~3B tokens |
 | [Beetle-FineWeb-2B](https://huggingface.co/Beetle-FineWeb-2B) | 2B tokens | ~300M tokens |
 
-For a full explanation of the token-budget bug and how the final `-24B-4` /
-`-24B-5` collections were produced, see
-**[beetlelm.github.io/models.html](https://beetlelm.github.io/models.html)**.
-New users should default to the `-24B-4` / `-24B-5` collections above.
-
-## Running locally (optional)
-
-You don't need to — Colab is the easy path — but if you'd rather run it on your own machine:
-
-```bash
-pip install -r requirements.txt
-jupyter notebook notebooks/Beetle_Model_Explorer.ipynb
-```
+For the full explanation of the token-budget bug and how the final `-24B-4` / `-24B-5` collections were produced, see **[beetlelm.github.io/models.html](https://beetlelm.github.io/models.html)**.
 
 ---
 
-## About the models
+## **Part of the Beetle ecosystem**
 
-Beetle models are small research language models for studying **learning dynamics** and **bilingual language acquisition**. Each was checkpointed densely through training so you can inspect *how* — not just *whether* — it learned. They are small and will happily produce nonsense; that's part of what makes watching them learn interesting.
+- **[beetlelm](https://github.com/beetlelm/beetlelm)** 🚀 — core training framework (train your own Beetle models)
+- **[beetle-data](https://github.com/beetlelm/beetle-data)** 📚 — bilingual data-preparation pipeline
+- **[beetle-analyze](https://github.com/beetlelm/beetle-analyze)** 🔬 — evaluation and interpretability analysis toolkit
+- **[beetle-explorer](https://github.com/beetlelm/beetle-explorer)** 🪲 *(this repo)* — no-code Colab model explorer
 
-Under the hood, loading a Beetle checkpoint is just:
+**Learn more:** project home at [beetlelm.github.io](https://beetlelm.github.io) · paper *Beetle: A Bilingual Model Suite for Modelling Second-Language Processing* (EMNLP 2026) at [arxiv.org/abs/2609.22633](https://arxiv.org/abs/2609.22633).
 
-```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-repo = "Beetle-FineWeb-24B-4/beetle-monolingual-fineweb-24b-isl"
-model = AutoModelForCausalLM.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
-tok   = AutoTokenizer.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
-```
+---
 
-The notebook wraps this (plus a couple of Beetle-specific fixes for generation) in a friendly interface.
+## **License**
 
-## Learn more
-
-- **Tutorial:** [beetle-explorer walkthrough](https://beetlelm.github.io/docs.html#beetle-explorer) on the project docs.
-- **Models & Data (collection guide):** https://beetlelm.github.io/models.html
-- **Project home:** https://beetlelm.github.io
-- **Framework overview:** https://beetlelm.github.io/framework.html
-- **Paper:** *Beetle: A Bilingual Model Suite for Modelling Second-Language Processing* (EMNLP 2026) — https://arxiv.org/abs/2609.22633
-
-## Part of the Beetle ecosystem
-
-- **[beetlelm](https://github.com/beetlelm/beetlelm)** — core training framework (train your own Beetle models).
-- **[beetle-data](https://github.com/beetlelm/beetle-data)** — bilingual data-preparation pipeline.
-- **[beetle-analyze](https://github.com/beetlelm/beetle-analyze)** — evaluation and interpretability analysis toolkit.
-- **[beetle-explorer](https://github.com/beetlelm/beetle-explorer)** (this repo) — no-code Colab model explorer.
-
-## Licence
-
-Apache-2.0. See [LICENSE](LICENSE).
+Beetle Explorer is open-source under the [Apache License 2.0](LICENSE).
