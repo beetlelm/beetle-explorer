@@ -10,9 +10,9 @@ It's built for people who want to *use* the models in applied settings — you d
 
 ## ▶️ Open the notebook
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/suchirsalhan/beetle-explorer/blob/main/notebooks/Beetle_Model_Explorer.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/beetlelm/beetle-explorer/blob/main/notebooks/Beetle_Model_Explorer.ipynb)
 
-Click the badge above (you'll need to be signed in to Google, and — because this repo is private — authorise Colab's GitHub access the first time).
+Click the badge above (you'll need to be signed in to Google, and authorise Colab's GitHub access the first time).
 
 **No badge / prefer to upload it yourself?** Download `notebooks/Beetle_Model_Explorer.ipynb` from this repo, go to [colab.research.google.com](https://colab.research.google.com), choose **File ▸ Upload notebook**, and pick the file.
 
@@ -34,15 +34,36 @@ Then just run the cells from top to bottom (each has a ▶️ play button).
 - **Generate text** from your own prompts, with sliders for creativity, length, and more.
 - **Look under the hood** (optional): see the exact configuration, the training recipe, and the model's top next-word predictions.
 
-## The five Beetle collections
+## Which collection should I use?
+
+> ⚠️ **Start with the final 24-billion-token release.** Because of a token-budget
+> drift bug, several earlier collections never reached their advertised size (see
+> the note below). For new work, default to **Beetle-FineWeb-24B-4** or
+> **Beetle-FineWeb-24B-5** — these are the only genuine 24B-token collections.
 
 | Collection | What it is |
 |---|---|
+| [Beetle-FineWeb-24B-4](https://huggingface.co/Beetle-FineWeb-24B-4) | **Recommended.** A genuine 24B-token FineWeb-2 collection (final release). |
+| [Beetle-FineWeb-24B-5](https://huggingface.co/Beetle-FineWeb-24B-5) | **Recommended.** A genuine 24B-token FineWeb-2 collection (final release). |
 | [Beetle-HumanScale](https://huggingface.co/Beetle-HumanScale) | Trained on roughly the amount of language a child hears. |
 | [Beetle-FineWeb-100M](https://huggingface.co/Beetle-FineWeb-100M) | Small models trained on 100M tokens of the multilingual FineWeb-2 web corpus. |
-| [Beetle-FineWeb-2B](https://huggingface.co/Beetle-FineWeb-2B) | Trained on 2B tokens of FineWeb-2. |
-| [Beetle-FineWeb2-24B](https://huggingface.co/Beetle-FineWeb2-24B) | Larger-data models trained on 24B tokens of FineWeb-2. |
-| [Beetle-FineWeb](https://huggingface.co/Beetle-FineWeb) | The original FineWeb (24B-token) collection. |
+
+### A note on the earlier "24B" and "2B" collections
+
+A token-budget drift bug meant several earlier collections stopped well short of
+their nominal token counts. They remain available for reference, but their names
+overstate how much data they actually saw:
+
+| Collection | Advertised | Actually reached |
+|---|---|---|
+| [Beetle-FineWeb2-24B](https://huggingface.co/Beetle-FineWeb2-24B) | 24B tokens | ~3B tokens |
+| [Beetle-FineWeb3-24B](https://huggingface.co/Beetle-FineWeb3-24B) | 24B tokens | ~3B tokens |
+| [Beetle-FineWeb-2B](https://huggingface.co/Beetle-FineWeb-2B) | 2B tokens | ~300M tokens |
+
+For a full explanation of the token-budget bug and how the final `-24B-4` /
+`-24B-5` collections were produced, see
+**[beetlelm.github.io/models.html](https://beetlelm.github.io/models.html)**.
+New users should default to the `-24B-4` / `-24B-5` collections above.
 
 ## Running locally (optional)
 
@@ -63,14 +84,27 @@ Under the hood, loading a Beetle checkpoint is just:
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
-repo = "Beetle-FineWeb-100M/beetle-monolingual-fineweb-100m-isl"
+repo = "Beetle-FineWeb-24B-4/beetle-monolingual-fineweb-24b-isl"
 model = AutoModelForCausalLM.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
 tok   = AutoTokenizer.from_pretrained(repo, revision="step-2048", trust_remote_code=True)
 ```
 
 The notebook wraps this (plus a couple of Beetle-specific fixes for generation) in a friendly interface.
 
-**Want to train your own Beetle models?** See the [beetlelm](https://github.com/suchirsalhan/beetlelm) training framework — that's the technical, research-facing project this notebook complements.
+## Learn more
+
+- **Tutorial:** [beetle-explorer walkthrough](https://beetlelm.github.io/docs.html#beetle-explorer) on the project docs.
+- **Models & Data (collection guide):** https://beetlelm.github.io/models.html
+- **Project home:** https://beetlelm.github.io
+- **Framework overview:** https://beetlelm.github.io/framework.html
+- **Paper:** *Beetle: A Bilingual Model Suite for Modelling Second-Language Processing* (EMNLP 2026) — https://arxiv.org/abs/2609.22633
+
+## Part of the Beetle ecosystem
+
+- **[beetlelm](https://github.com/beetlelm/beetlelm)** — core training framework (train your own Beetle models).
+- **[beetle-data](https://github.com/beetlelm/beetle-data)** — bilingual data-preparation pipeline.
+- **[beetle-analyze](https://github.com/beetlelm/beetle-analyze)** — evaluation and interpretability analysis toolkit.
+- **[beetle-explorer](https://github.com/beetlelm/beetle-explorer)** (this repo) — no-code Colab model explorer.
 
 ## Licence
 
