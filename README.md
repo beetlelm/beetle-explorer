@@ -62,17 +62,9 @@ Beetle Explorer lets you load and play with [Beetle](https://beetlelm.github.io)
 
 ## **Which collection to pick**
 
-> ⚠️ **New here? Default to the final 24-billion-token release.** The only genuine 24B-token collections are **[Beetle-FineWeb-24B-4](https://huggingface.co/Beetle-FineWeb-24B-4)** and **[Beetle-FineWeb-24B-5](https://huggingface.co/Beetle-FineWeb-24B-5)**. Start with one of these.
+**New here?** Default to the full 24-billion-token release: **[Beetle-FineWeb-24B-4](https://huggingface.co/Beetle-FineWeb-24B-4)** and **[Beetle-FineWeb-24B-5](https://huggingface.co/Beetle-FineWeb-24B-5)**. Start with one of these.
 
-Because of a **token-budget bug**, several earlier collections never reached the token counts their names advertise. They remain available for reference, but the labels overstate how much data they actually saw:
-
-| Collection | Advertised | Actually reached |
-|---|---|---|
-| [Beetle-FineWeb2-24B](https://huggingface.co/Beetle-FineWeb2-24B) | 24B tokens | ~3B tokens |
-| [Beetle-FineWeb3-24B](https://huggingface.co/Beetle-FineWeb3-24B) | 24B tokens | ~3B tokens |
-| [Beetle-FineWeb-2B](https://huggingface.co/Beetle-FineWeb-2B) | 2B tokens | ~300M tokens |
-
-For the full explanation of the token-budget bug and how the final `-24B-4` / `-24B-5` collections were produced, see **[beetlelm.github.io/models.html](https://beetlelm.github.io/models.html)**.
+For the full catalogue of collections, see **[beetlelm.github.io/models.html](https://beetlelm.github.io/models.html)**.
 
 ---
 
